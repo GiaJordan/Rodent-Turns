@@ -12,18 +12,24 @@ thresh.angle=135;
 thresh.LH=0.95;
 thresh.medi=30;
 filterWin=25;
-generateVideo = 1;
-%DLCfile='G:\DATA\Sahana_W_Maze\Ephys\vt2DLC_resnet101_Head TrackingOct23shuffle1_700000_filtered.csv'
-%DLCfile='G:\DATA\Sahana_W_Maze\Behavior\10555_03DLC_resnet101_W Maze BSOct30shuffle1_700000.csv';
-DLCfile='G:\DATA\Adam_ICR_Behavior\0741\2020-03-02_12-42-10\DeepLabCut\Bright_VT2DLC_resnet101_ICR BehaviorNov23shuffle1_700000.csv';
-%INvideo='G:\DATA\Sahana_W_Maze\vt2DLC_resnet101_Head TrackingOct23shuffle1_700000_labeled.mp4';
-%INvideo='G:\DATA\Sahana_W_Maze\Ephys\vt2.mpg';
-%INvideo='G:\DATA\Sahana_W_Maze\Behavior\10555_03DLC_resnet101_W Maze BSOct30shuffle1_700000_labeled.mp4';
-INvideo='G:\DATA\Adam_ICR_Behavior\0741\2020-03-02_12-42-10\Bright_VT2.mpg'
+generateVideo = 0;
+cd 'G:\DATA\Adam_ICR_Behavior\0741\2020-03-02_12-42-10' 
+% %DLCfile='G:\DATA\Sahana_W_Maze\Ephys\vt2DLC_resnet101_Head TrackingOct23shuffle1_700000_filtered.csv'
+% %DLCfile='G:\DATA\Sahana_W_Maze\Behavior\10555_03DLC_resnet101_W Maze BSOct30shuffle1_700000.csv';
+% DLCfile='G:\DATA\Adam_ICR_Behavior\0741\2020-03-02_12-42-10\DeepLabCut\Bright_VT2DLC_resnet101_ICR BehaviorNov23shuffle1_700000.csv';
+% %INvideo='G:\DATA\Sahana_W_Maze\vt2DLC_resnet101_Head TrackingOct23shuffle1_700000_labeled.mp4';
+% %INvideo='G:\DATA\Sahana_W_Maze\Ephys\vt2.mpg';
+% %INvideo='G:\DATA\Sahana_W_Maze\Behavior\10555_03DLC_resnet101_W Maze BSOct30shuffle1_700000_labeled.mp4';
+% INvideo='G:\DATA\Adam_ICR_Behavior\0741\2020-03-02_12-42-10\Bright_VT2.mpg'
+% 
+% %OUTvideo='G:\DATA\Sahana_W_Maze\Ephys\Verify.mp4';
+% %OUTvideo='G:\DATA\Sahana_W_Maze\Behavior\10555_03Verify_Labeled.mpeg';
+% OUTvideo='G:\DATA\Adam_ICR_Behavior\0741\2020-03-02_12-42-10\DeepLabCut\Verify.mpg'
 
-%OUTvideo='G:\DATA\Sahana_W_Maze\Ephys\Verify.mp4';
-%OUTvideo='G:\DATA\Sahana_W_Maze\Behavior\10555_03Verify_Labeled.mpeg';
-OUTvideo='G:\DATA\Adam_ICR_Behavior\0741\2020-03-02_12-42-10\DeepLabCut\Verify.mpg'
+DLCfile='.\DeepLabCut\Bright_VT2DLC_resnet101_ICR BehaviorNov23shuffle1_700000.csv';
+INvideo='.\Bright_VT2.mpg'
+OUTvideo='.\DeepLabCut\Verify.mpg'
+
 addpath(genpath('..\DeepLabCut_CowenLabMods\'))
 
 %%
@@ -96,9 +102,12 @@ TS=(0:1/video.FrameRate:video.FrameRate*video.Duration)';
 %Create list of timestamps where rat is turned
 turnTS=TS(turns);
 
+
 %Generate Video from frames where rat is turned
 if generateVideo
     CreateTurnsVideo(video,OUTvideo,turns)
 end
 
-
+OUT=table(turnTS,angles(turns,3));
+OUT.Properties.VariableNames={'Turn_time_stamps' 'Angle(degrees)'}
+writetable(OUT,'turnTS.csv')
