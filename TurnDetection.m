@@ -13,6 +13,10 @@ thresh.LH=0.95;
 thresh.medi=30;
 filterWin=25;
 generateVideo = 0;
+
+
+dataPath='\\DATA-SERVER\ICR_Behavior\BehaviorPilot';
+
 cd 'G:\DATA\Adam_ICR_Behavior\0741\2020-03-02_12-42-10' 
 % %DLCfile='G:\DATA\Sahana_W_Maze\Ephys\vt2DLC_resnet101_Head TrackingOct23shuffle1_700000_filtered.csv'
 % %DLCfile='G:\DATA\Sahana_W_Maze\Behavior\10555_03DLC_resnet101_W Maze BSOct30shuffle1_700000.csv';

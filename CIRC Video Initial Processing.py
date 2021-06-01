@@ -10,10 +10,13 @@ C:\Program Files\DeepLabCut-master\conda-environments
 #activate dlc-windowsGPU
 import cv2
 import numpy as np
-#import deeplabcut as dlc
+import deeplabcut as dlc
 import os
 from PIL import ImageEnhance as ie
 from PIL import Image as image
+
+
+
 
 
 study='adam'
@@ -21,27 +24,33 @@ study='adam'
 if study=='adam':
     a=2
     b=12
+    config=r'G:\Head Movement Analysis\ICR Behavior-Gia-2020-11-23\config.yaml'
 elif study=='sahana':
     a=1
     b=100
 else:
         print('Invalid Study\n')
     
-
+Label_video=False
 
 # left off with a=2 b=200 for adams vids
 # sahana vids - a=1 b=200
-VideoDirectory=(r'G:\DATA\Adam_ICR_Behavior\0741\2020-03-04_12-19-17')
+#VideoDirectory=(r'G:\DATA\Adam_ICR_Behavior\0741\2020-03-04_12-19-17')
+VideoDirectory=(r'\\DATA-SERVER\ICR_Behavior\BehaviorPilot')
 #VideoDirectory=(r'G:\DATA\Sahana_W_Maze')
 
-for folder, subfolder, videos in os.walk(VideoDirectory):
-    print(folder)
-    print(subfolder)
+for folder, subfolder, videos in os.walk(VideoDirectory,topdown=True):
+    #print(folder)
+    #print(subfolder)
     print(videos)
+    
+
+        
     if len(videos) !=0:
         for video in videos:
             
-            if str(video).endswith('VT2.mpg'):
+            if str(video).endswith('VT2.mpg') | str(video).endswith('01.mpg'):
+            #if str(video).startswith('VT') & str(video).endswith('.mpg'):
                 #OUTvideo=os.path.join(folder+'\\Vertical'+video)
                 OUTvideo=os.path.join(folder+'\\Bright_'+video)
                
@@ -82,16 +91,18 @@ for folder, subfolder, videos in os.walk(VideoDirectory):
                     del newImg
                 
                 video_writer.release()
+                
+                dlc.analyze_videos(config,[OUTvideo],save_as_csv=True)
+                dlc.filterpredictions(config,[OUTvideo],filtertype='arima',p_bound=.01,ARdegree=3,MAdegree=1)
+                
+                if Label_video==True:
+                    dlc.create_labeled_video(config,[OUTvideo],trailpoints='5',save_frames=True,filtered=True)
         else:
             continue
 
 
-#
-#dlc.analyze_videos(config,[INvideo],save_as_csv=True)
-#dlc.filterpredictions(config,[INvideo],filtertype='arima',p_bound=.01,ARdegree=3,MAdegree=1)
-#
-#if Label_video==True:
-#    dlc.create_labeled_video(config,[INvideo],trailpoints='5',save_frames=True,filtered=True)
-#    
-#    
-#    
+
+        
+    
+    
+    
