@@ -17,22 +17,22 @@ generateVideo = 0;
 
 dataPath='\\DATA-SERVER\ICR_Behavior\BehaviorPilot';
 
-%cd 'G:\DATA\Adam_ICR_Behavior\0741\2020-03-02_12-42-10' 
-% % %DLCfile='G:\DATA\Sahana_W_Maze\Ephys\vt2DLC_resnet101_Head TrackingOct23shuffle1_700000_filtered.csv'
-% % %DLCfile='G:\DATA\Sahana_W_Maze\Behavior\10555_03DLC_resnet101_W Maze BSOct30shuffle1_700000.csv';
-% % DLCfile='G:\DATA\Adam_ICR_Behavior\0741\2020-03-02_12-42-10\DeepLabCut\Bright_VT2DLC_resnet101_ICR BehaviorNov23shuffle1_700000.csv';
-% % %INvideo='G:\DATA\Sahana_W_Maze\vt2DLC_resnet101_Head TrackingOct23shuffle1_700000_labeled.mp4';
-% % %INvideo='G:\DATA\Sahana_W_Maze\Ephys\vt2.mpg';
-% % %INvideo='G:\DATA\Sahana_W_Maze\Behavior\10555_03DLC_resnet101_W Maze BSOct30shuffle1_700000_labeled.mp4';
-% % INvideo='G:\DATA\Adam_ICR_Behavior\0741\2020-03-02_12-42-10\Bright_VT2.mpg'
-% % 
-% % %OUTvideo='G:\DATA\Sahana_W_Maze\Ephys\Verify.mp4';
-% % %OUTvideo='G:\DATA\Sahana_W_Maze\Behavior\10555_03Verify_Labeled.mpeg';
-% % OUTvideo='G:\DATA\Adam_ICR_Behavior\0741\2020-03-02_12-42-10\DeepLabCut\Verify.mpg'
+cd 'G:\DATA\Adam_ICR_Behavior\0741\2020-03-02_12-42-10' 
+% %DLCfile='G:\DATA\Sahana_W_Maze\Ephys\vt2DLC_resnet101_Head TrackingOct23shuffle1_700000_filtered.csv'
+% %DLCfile='G:\DATA\Sahana_W_Maze\Behavior\10555_03DLC_resnet101_W Maze BSOct30shuffle1_700000.csv';
+% DLCfile='G:\DATA\Adam_ICR_Behavior\0741\2020-03-02_12-42-10\DeepLabCut\Bright_VT2DLC_resnet101_ICR BehaviorNov23shuffle1_700000.csv';
+% %INvideo='G:\DATA\Sahana_W_Maze\vt2DLC_resnet101_Head TrackingOct23shuffle1_700000_labeled.mp4';
+% %INvideo='G:\DATA\Sahana_W_Maze\Ephys\vt2.mpg';
+% %INvideo='G:\DATA\Sahana_W_Maze\Behavior\10555_03DLC_resnet101_W Maze BSOct30shuffle1_700000_labeled.mp4';
+% INvideo='G:\DATA\Adam_ICR_Behavior\0741\2020-03-02_12-42-10\Bright_VT2.mpg'
 % 
-% % DLCfile='.\DeepLabCut\Bright_VT2DLC_resnet101_ICR BehaviorNov23shuffle1_700000.csv';
-% % INvideo='.\Bright_VT2.mpg'
-% % OUTvideo='.\DeepLabCut\Verify.mpg'
+% %OUTvideo='G:\DATA\Sahana_W_Maze\Ephys\Verify.mp4';
+% %OUTvideo='G:\DATA\Sahana_W_Maze\Behavior\10555_03Verify_Labeled.mpeg';
+% OUTvideo='G:\DATA\Adam_ICR_Behavior\0741\2020-03-02_12-42-10\DeepLabCut\Verify.mpg'
+
+% DLCfile='.\DeepLabCut\Bright_VT2DLC_resnet101_ICR BehaviorNov23shuffle1_700000.csv';
+% INvideo='.\Bright_VT2.mpg'
+% OUTvideo='.\DeepLabCut\Verify.mpg'
 
 DLCpaths=dir('Bright*filtered.csv');
 DLCfile=DLCpaths(end).name;
@@ -40,7 +40,7 @@ DLCfile=DLCpaths(end).name;
 vidPaths=dir('Bright*.mpg');
 INvideo=vidPaths(end).name;
 
-OUTvideo=[INvideo(8:10) '_OUT.mpg'];
+OUTvideo=[INvideo(8:10)
 
 
 

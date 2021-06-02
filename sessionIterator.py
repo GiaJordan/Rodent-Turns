@@ -18,16 +18,16 @@ for rat in rats:
     
     os.chdir(os.path.join(dataFolder,rat))
     sessions=os.listdir()
-    
+    #print(sessions)
     for session in sessions:
+        #print(session)
         
-        if os.path.isdir(session):
+        if os.path.isdir(os.path.join(dataFolder,rat,session)):
             os.chdir(os.path.join(dataFolder,rat,session))
             
             print(os.getcwd(),'\n')
             lightCorr()
-        else:
-            pass
+       
             
         
         

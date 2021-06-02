@@ -7,22 +7,20 @@ C:\Program Files\DeepLabCut-master\conda-environments
 
 
 """
-#activate dlc-windowsGPU
-import cv2
-import numpy as np
-import deeplabcut as dlc
-import os
-from PIL import ImageEnhance as ie
-from PIL import Image as image
 
+
+           
 def lightCorr():
-
-    #os.chdir(r'\\DATA-SERVER\ICR_Behavior\BehaviorPilot\0501\2018-01-22_14-36-54')
-    #os.chdir(r'G:\DATA\Adam_ICR_Behavior\0741\2020-05-18_13-01-25')
+    import cv2
+    import numpy as np
+    import deeplabcut as dlc
+    import os
+    from PIL import ImageEnhance as ie
+    from PIL import Image as image
+    Label_video=False
     
-    cwd=os.getcwd()
     study='adam'
-    
+       
     if study=='adam':
         a=2
         b=12
@@ -32,8 +30,14 @@ def lightCorr():
         b=100
     else:
             print('Invalid Study\n')
+    #os.chdir(r'\\DATA-SERVER\ICR_Behavior\BehaviorPilot\0501\2018-01-22_14-36-54')
+    #os.chdir(r'\\DATA-SERVER\ICR_Behavior\BehaviorPilot\0000\2018-08-24_15-47-22')
+    #os.chdir(r'G:\DATA\Adam_ICR_Behavior\0741\2020-05-18_13-01-25')
+    
+    cwd=os.getcwd()
+   
         
-    Label_video=False
+   
     
     # # left off with a=2 b=200 for adams vids
     # # sahana vids - a=1 b=200
@@ -51,6 +55,10 @@ def lightCorr():
         # if len(videos) !=0:
         #     for video in videos:
     videos=os.listdir()
+    
+    for video in videos:
+        if 'DLC' in video:
+            os.remove(video)
     
     for video in videos:
                     
@@ -78,8 +86,8 @@ def lightCorr():
             #print(fwidth)
             count=1
             
-            codec=cv2.VideoWriter.fourcc(*'XVID')
-            #codec=cv2.VideoWriter.fourcc(*'MPEG')
+            #codec=cv2.VideoWriter.fourcc(*'XVID')
+            codec=cv2.VideoWriter.fourcc(*'MPEG')
             #OUTvideo=os.path.join(folder+'\\Vertical'+video)
             #print(os.path.abspath(OUTvideo))
             video_writer=cv2.VideoWriter(OUTvideo,codec,fps,(fwidth,fheight))
@@ -93,7 +101,7 @@ def lightCorr():
                 newImg=a*img+b
                 
                 video_writer.write(newImg)
-                if i % 1500==0:
+                if i % 5000==0:
                     print(str(i) + " of " + str(length) + " frames\n")
                 
                 del img
@@ -101,11 +109,11 @@ def lightCorr():
             
             video_writer.release()
             
-            # dlc.analyze_videos(config,[OUTvideo],save_as_csv=True)
-            # dlc.filterpredictions(config,[OUTvideo],filtertype='arima',p_bound=.01,ARdegree=3,MAdegree=1)
+            dlc.analyze_videos(config,[OUTvideo],save_as_csv=True)
+            dlc.filterpredictions(config,[OUTvideo],filtertype='arima',p_bound=.01,ARdegree=3,MAdegree=1)
             
-            # if Label_video==True:
-            #     dlc.create_labeled_video(config,[OUTvideo],trailpoints='5',save_frames=True,filtered=True)
+            if Label_video==True:
+                dlc.create_labeled_video(config,[OUTvideo],trailpoints='5',save_frames=True,filtered=True)
         # else:
         #     continue
     

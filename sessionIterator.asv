@@ -1,0 +1,18 @@
+
+dataDir='\\DATA-SERVER\ICR_Behavior\BehaviorPilot';
+
+cd(dataDir)
+rats=dir(dataDir)
+
+for rat=3:length(rats)
+    fprintf(
+    cd(fullfile(dataDir,rats(rat).name))
+
+
+
+
+
+
+
+
+end
