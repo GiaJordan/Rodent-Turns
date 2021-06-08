@@ -115,6 +115,8 @@ video=VideoReader(INvideo);
 TS=(0:1/video.FrameRate:video.FrameRate*video.Duration)';
 %Create list of timestamps where rat is turned
 turnTS=TS(turns);
+frames=1:length(coords)
+turnFrames=frames(turns);
 
 
 %Generate Video from frames where rat is turned
@@ -122,6 +124,6 @@ if generateVideo
     CreateTurnsVideo(video,OUTvideo,turns)
 end
 
-OUT=table(turnTS,angles(turns,3));
-OUT.Properties.VariableNames={'Turn_time_stamps' 'Angle(degrees)'}
+OUT=table(turnFrames,turnTS,angles(turns,3));
+OUT.Properties.VariableNames={'Turn_Frame_Numbers' 'Turn_Time_Stamps' 'Angle(degrees)'}
 writetable(OUT,'turnTS.csv')
