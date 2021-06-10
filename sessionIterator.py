@@ -29,6 +29,11 @@ for rat in rats:
     #iterate thorugh sesions and files
     for session in sessions:
         
+        """
+        Stopped at rat 0140 session ending with 9-34-16
+        """
+        
+        
         #if the 'file' is a valid ICR session, move to directory and process/analyze video
         if os.path.isdir(os.path.join(dataFolder,rat,session)):
             os.chdir(os.path.join(dataFolder,rat,session))

@@ -49,6 +49,11 @@ def lightCorr():
     #for repeated runs - delets old DeepLabCut files so new ones can be created
     for video in videos:
         if 'DLC' in video:
+            """
+            """
+            return ######For running again to continue only
+            """
+            """
             os.remove(video)
     
     #iterates thorugh directory files/subdirectories
