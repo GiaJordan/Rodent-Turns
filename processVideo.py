@@ -34,6 +34,7 @@ def lightCorr():
         a=2
         b=12
         config=r'G:\Head Movement Analysis\ICR Behavior-Gia-2020-11-23\config.yaml'
+        #config=r'G:\GitHub\Rodent-Turns\DLC\ICR Behavior-Gia-2020-11-23\config.yaml'
     elif study=='sahana':
         a=1
         b=100
@@ -41,6 +42,8 @@ def lightCorr():
             print('Invalid Study\n')
     
     #save current working directory
+    
+    
     cwd=os.getcwd()
 
     #git list of directory contents
@@ -49,11 +52,10 @@ def lightCorr():
     #for repeated runs - delets old DeepLabCut files so new ones can be created
     for video in videos:
         if 'DLC' in video:
-            """
-            """
+            ##############################
+            print("Skipping Directory: "+cwd)
             return ######For running again to continue only
-            """
-            """
+            ##############################
             os.remove(video)
     
     #iterates thorugh directory files/subdirectories
@@ -107,7 +109,7 @@ def lightCorr():
             video_writer.release()
             
             #analyze video with deeplabcut and filter coordinates with ARIMA filter in DLC
-            dlc.analyze_videos(config,[OUTvideo],save_as_csv=True)
+            dlc.analyze_videos(config,[OUTvideo],save_as_csv=True,gputouse=0)
             dlc.filterpredictions(config,[OUTvideo],filtertype='arima',p_bound=.01,ARdegree=3,MAdegree=1)
             
             #create DLC labeled video if necessary
