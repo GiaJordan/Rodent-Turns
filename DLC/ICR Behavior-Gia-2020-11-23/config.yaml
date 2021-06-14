@@ -1,0 +1,54 @@
+    # Project definitions (do not edit)
+Task: ICR Behavior
+scorer: Gia
+date: Nov23
+multianimalproject: false
+
+    # Project path (change when moving around)
+project_path: G:\Head Movement Analysis\ICR Behavior-Gia-2020-11-23
+
+    # Annotation data set configuration (and individual video cropping parameters)
+video_sets:
+  G:\Head Movement Analysis\ICR Behavior-Gia-2020-11-23\videos\Bright_VT2.mpg:
+    crop: 0, 720, 0, 480
+  G:\Head Movement Analysis\ICR Behavior-Gia-2020-11-23\videos\Bright_VT2_2.mpg:
+    crop: 0, 720, 0, 480
+bodyparts:
+- Head
+- Neck
+- Tail
+start: 0
+stop: 1
+numframes2pick: 40
+
+    # Plotting configuration
+skeleton: [[Head, Neck], [Neck, Tail]]
+skeleton_color: black
+pcutoff: 0.6
+dotsize: 7
+alphavalue: 0.7
+colormap: plasma
+
+    # Training,Evaluation and Analysis configuration
+TrainingFraction:
+- 0.85
+iteration: 1
+default_net_type: resnet_152
+default_augmenter: default
+snapshotindex: -1
+batch_size: 8
+
+    # Cropping Parameters (for analysis and outlier frame detection)
+cropping: false
+croppedtraining: false
+    #if cropping is true for analysis, then set the values here:
+x1: 0
+x2: 640
+y1: 277
+y2: 624
+
+    # Refinement configuration (parameters from annotation dataset configuration also relevant in this stage)
+corner2move2:
+- 50
+- 50
+move2corner: true
