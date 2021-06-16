@@ -9,15 +9,15 @@ import os
 from processVideo import lightCorr
 
 #move to ICR directory
-os.chdir(r'\\DATA-SERVER\ICR_Behavior\BehaviorPilot')
-
+#os.chdir(r'\\DATA-SERVER\ICR_Behavior\BehaviorPilot')
+os.chdir(r'Z:\BehaviorPilot')
 #save directory name
 dataFolder=os.getcwd()
 #get list of rats in directory
 rats=os.listdir()
 
 #iterate through rats
-for rat in rats:
+for rat in rats[1::2]:
     #display rat to be analyzed
     print(os.path.join(dataFolder,rat))
     

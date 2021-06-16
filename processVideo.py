@@ -51,7 +51,7 @@ def lightCorr():
     
     #for repeated runs - delets old DeepLabCut files so new ones can be created
     for video in videos:
-        if 'DLC' in video:
+        if 'DLC_resnet152_ICR BehaviorNov23shuffle1_700000_filtered' in video:
             ##############################
             print("Skipping Directory: "+cwd)
             return ######For running again to continue only
