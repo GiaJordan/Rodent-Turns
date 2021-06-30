@@ -93,9 +93,15 @@ def lightCorr():
             capture=cv2.VideoCapture(video)
             
             #iterage through video frames, adjust brightness/contrast and write to new video
-            for i in range(length-30):
+            for i in range(length):
                 _, img = capture.read()
-                newImg=a*img+b
+                
+                try:
+                    newImg=a*img+b
+                except TypeError:
+                    print("Exception Caught")
+                    break
+                    
                 video_writer.write(newImg)
                 
                 #counter to display progress
@@ -119,7 +125,7 @@ def lightCorr():
     
     
     
-    
+
             
         
         
