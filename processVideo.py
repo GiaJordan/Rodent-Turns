@@ -4,8 +4,6 @@ Gia Jordan 2020
 
 Run in Anaconda GPU Environment
 C:\Program Files\DeepLabCut-master\conda-environments
-
-
 """
 
 
@@ -45,6 +43,7 @@ def lightCorr():
     
     
     cwd=os.getcwd()
+    
     #git list of directory contents
     videos=os.listdir()
     
@@ -68,9 +67,30 @@ def lightCorr():
             print('Processing video: ' + video)
             OUTvideo='Bright_'+video
             OUTvideo=os.path.join(cwd,OUTvideo)
-            OUTvideo=OUTvideo.replace("ICR_Behavior",r"ICR_Behavior-2",1)
+            OUTvideo=OUTvideo.replace("ICR_Behavior",r"ICR-Behavior-2",1)
             print('Input:',os.path.abspath(video))
             print('Output:',OUTvideo)
+            
+            
+            folders=[]
+            path=OUTvideo
+            while 1:
+                path, folder = os.path.split(path)
+                
+                if folder!= "":
+                    folders.append(folder)
+                elif path!= "":
+                    folders.append(path)
+                    
+                    break
+            folders.reverse()
+            
+            buildAPath="";
+            for folder in folders[:-1]:
+                buildAPath=os.path.join(buildAPath,folder)
+                if not os.path.exists(buildAPath):
+                    os.mkdir(buildAPath)
+
             
             #Get input video details
             input=cv2.VideoCapture(os.path.abspath(video))
@@ -80,7 +100,7 @@ def lightCorr():
             length=int(input.get(cv2.CAP_PROP_FRAME_COUNT))
     
             #Frame number counter
-            count=1
+            #count=1
             
             ##Set Codec
             #codec=cv2.VideoWriter.fourcc(*'XVID')
