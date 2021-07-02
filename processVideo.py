@@ -45,7 +45,6 @@ def lightCorr():
     
     
     cwd=os.getcwd()
-
     #git list of directory contents
     videos=os.listdir()
     
@@ -64,11 +63,12 @@ def lightCorr():
         #Identify VT behavior videos
         if str(video).startswith('VT') & str(video).endswith('.mpg'):
             
-
+    
             #Display identified video name/paths, set names for new video and display       
             print('Processing video: ' + video)
             OUTvideo='Bright_'+video
             OUTvideo=os.path.join(cwd,OUTvideo)
+            OUTvideo=OUTvideo.replace("ICR_Behavior",r"ICR_Behavior-2",1)
             print('Input:',os.path.abspath(video))
             print('Output:',OUTvideo)
             
@@ -78,14 +78,14 @@ def lightCorr():
             fwidth=int(input.get(cv2.CAP_PROP_FRAME_WIDTH))
             fheight=int(input.get(cv2.CAP_PROP_FRAME_HEIGHT))
             length=int(input.get(cv2.CAP_PROP_FRAME_COUNT))
-
+    
             #Frame number counter
             count=1
             
             ##Set Codec
             #codec=cv2.VideoWriter.fourcc(*'XVID')
             codec=cv2.VideoWriter.fourcc(*'MPEG')
-
+    
             #Create video writer object
             video_writer=cv2.VideoWriter(OUTvideo,codec,fps,(fwidth,fheight))
             
