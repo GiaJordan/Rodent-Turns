@@ -16,6 +16,7 @@ def lightCorr():
     from PIL import ImageEnhance as ie
     from PIL import Image as image
     
+    #os.chdir(r'\\DATA-SERVER\ICR_Behavior\BehaviorPilot\0708\2019-07-16_14-14-18')
     
     #inputs#######################
     
@@ -47,14 +48,31 @@ def lightCorr():
     #git list of directory contents
     videos=os.listdir()
     
+    
+    
     #for repeated runs - delets old DeepLabCut files so new ones can be created
     for video in videos:
         if 'DLC_resnet152_ICR BehaviorNov23shuffle1_700000_filtered' in video:
             ##############################
             print("Skipping Directory: "+cwd)
+            #del cwd
             return ######For running again to continue only
             ##############################
             os.remove(video)
+            
+    if os.path.exists(cwd.replace("ICR_Behavior",r"ICR-Behavior-2",1)):
+    
+        outputs=os.listdir(cwd.replace("ICR_Behavior",r"ICR-Behavior-2",1))
+                
+        for video in outputs:
+            if 'DLC_resnet152_ICR BehaviorNov23shuffle1_700000_filtered' in video:
+                ##############################
+                print("Skipping Directory: "+cwd)
+                #del cwd
+                return ######For running again to continue only
+                ##############################
+                os.remove(video)
+        
     
     #iterates thorugh directory files/subdirectories
     for video in videos:
@@ -142,11 +160,10 @@ def lightCorr():
             if Label_video==True:
                 dlc.create_labeled_video(config,[OUTvideo],trailpoints='5',save_frames=True,filtered=True)
 
-    
-    
+
+
+
     
 
-            
-        
         
         
