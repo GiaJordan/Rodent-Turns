@@ -9,11 +9,20 @@
 %   https://www.mathworks.com/matlabcentral/answers/429891-how-to-recursively-go-through-all-directories-and-sub-directories-and-process-files
 %% Inputs
 thresh.angle=135;
+thresh.speed=10;%angle/sec
+thresh.minDur=1;%seconds
 thresh.LH=0.95;
 thresh.medi=30;
 filterWin=25;
 generateVideo = 0;
 
+frameRate=30;
+
+centerPos=[370,250];
+
+OUT=[];
+
+% DLCfile='Bright_VT2_0001DLC_resnet152_ICR BehaviorNov23shuffle1_700000_filtered.csv';
 
 dataPath='\\DATA-SERVER\ICR_Behavior\BehaviorPilot';
 
@@ -42,10 +51,12 @@ INvideo=vidPaths(end).name;
 
 OUTvideo=[INvideo(8:10) '_OUT.mpg'];
 
-
+video=VideoReader(INvideo); 
+frameRate=video.FrameRate;
 
 addpath(genpath('..\DeepLabCut_CowenLabMods\'))
 
+bodyParts={'Head' 'Neck' 'Tail'};
 %%
 coords=readmatrix(DLCfile);
 fprintf("Reading from DeepLabCut file %s\n",DLCfile);
@@ -104,19 +115,106 @@ angles=rad2deg(angles);
 %Calculate largest angle from the values of the other two
 angles(:,3)=180-angles(:,2)-angles(:,1);
 
+
+pos.cart=table(head(:,1:2),neck(:,1:2),tail(:,1:2));
+pos.cart.Properties.VariableNames=bodyParts;
+
+pos.rad=table(head(:,1:2),neck(:,1:2),tail(:,1:2));
+pos.rad.Properties.VariableNames=bodyParts;
+
+
+for i=1:length(bodyParts)
+    pos.rad.(bodyParts{i})(:,:)=nan;
+    
+    
+    
+    pos.cart.(bodyParts{i})(:,1)=pos.cart.(bodyParts{i})(:,1)-centerPos(1);
+    pos.cart.(bodyParts{i})(:,2)=pos.cart.(bodyParts{i})(:,2)-centerPos(2);
+    
+    
+    
+    Q2=pos.cart.(bodyParts{i})(:,1)<0&pos.cart.(bodyParts{i})(:,2)>0;
+    Q3=pos.cart.(bodyParts{i})(:,1)<0&pos.cart.(bodyParts{i})(:,2)<0;
+    
+    
+    
+    pos.rad.(bodyParts{i})(:,1)=sqrt((pos.cart.(bodyParts{i})(:,1).^2)+...
+        pos.cart.(bodyParts{i})(:,2).^2);
+        
+    
+    
+    pos.rad.(bodyParts{i})(:,2)=atan(pos.cart.(bodyParts{i})(:,2)./...
+        pos.cart.(bodyParts{i})(:,1))...
+        *(180/pi);
+    
+    
+    pos.rad.(bodyParts{i})(Q2,2)=pos.rad.(bodyParts{i})(Q2,2)+180;
+    pos.rad.(bodyParts{i})(Q3,2)=pos.rad.(bodyParts{i})(Q3,2)-180;
+    
+% x1=x1-centerPos(1);
+% x2=x2-centerPos(1);
+% x3=x3-centerPos(1);
+% 
+% y1=y1-centerPos(2);
+% y2=y2-centerPos(2);
+% y3=y3-centerPos(2);
+% 
+% Q2=x1<0&y1>0;
+% Q3=x1<0&y1<0;
+% 
+% 
+% r1=sqrt(x1.*x1+y1.*y1);
+% theta1=nan(length(x1),1);
+% theta1=atan(y1./x1)*(180/pi);
+% theta1(Q2)=theta1(Q2)+180;
+% theta1(Q3)=theta1(Q3)-180;
+
+
+end
+
+
+
+
 %% Identifying times when rat is turned
 
+angVel=[0;diff(pos.rad.Neck(:,2))];
+angVel=angVel./(1/frameRate);
+
+
 %Identifies frames where rat is turned based on 3rd angle value
+stops=angVel<thresh.speed;
 turns=angles(:,3)<thresh.angle;
 
-%Create videoreader object
-video=VideoReader(INvideo);
-%Generate timestamps for each frame
-TS=(0:1/video.FrameRate:video.FrameRate*video.Duration)';
-%Create list of timestamps where rat is turned
-turnTS=TS(turns);
-frames=1:length(coords)
-turnFrames=frames(turns);
+scans=stops&turns;
+
+scStart=find([0;diff(scans)]==1);
+scEnd=find([0;diff(scans)]==-1);
+
+if scStart(1)>scEnd(1)
+   scStart=[1;scStart];
+   scEnd=[scEnd;length(scans)];
+end
+
+rng=scEnd-scStart;
+tooShort=rng*(1/frameRate)<thresh.minDur;
+
+scStart(tooShort)=nan;
+scEnd(tooShort)=nan;
+
+scStart=scStart(~isnan(scStart));
+scEnd=scEnd(~isnan(scEnd));
+
+OUT.scanFrames=[scStart,scEnd];
+OUT.noScans=length(scStart);
+
+% %Create videoreader object
+% %video=VideoReader(INvideo);
+% %Generate timestamps for each frame
+% TS=(0:1/frameRate:frameRate*video.Duration)';
+% %Create list of timestamps where rat is turned
+% turnTS=TS(turns);
+% frames=1:length(coords);
+% turnFrames=frames(turns);
 
 
 %Generate Video from frames where rat is turned
@@ -124,6 +222,6 @@ if generateVideo
     CreateTurnsVideo(video,OUTvideo,turns)
 end
 
-OUT=table(turnFrames,turnTS,angles(turns,3));
-OUT.Properties.VariableNames={'Turn_Frame_Numbers' 'Turn_Time_Stamps' 'Angle(degrees)'}
-writetable(OUT,'turnTS.csv')
+% OUT=table(turnFrames,turnTS,angles(turns,3));
+% OUT.Properties.VariableNames={'Turn_Frame_Numbers' 'Turn_Time_Stamps' 'Angle(degrees)'}
+% writetable(OUT,'turnTS.csv')
