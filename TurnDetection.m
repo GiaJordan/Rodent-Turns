@@ -8,7 +8,7 @@
 %   NTS, automate readmatrix and video selection with recursive dir
 %   https://www.mathworks.com/matlabcentral/answers/429891-how-to-recursively-go-through-all-directories-and-sub-directories-and-process-files
 %% Inputs
-thresh.angle=135;
+thresh.angle=45;
 thresh.speed=10;%angle/sec
 thresh.minDur=1;%seconds
 thresh.LH=0.95;
@@ -100,9 +100,17 @@ B=zeros(size(x1));
 C=zeros(size(x1));
 
 %Calculate triangle side lengths from coordinates
-A=sqrt(abs(((x2-x1).^2)+(y2-y1).^2));
-B=sqrt(abs(((x2-x3).^2)+(y2-y3).^2));
-C=sqrt(abs(((x3-x1).^2)+(y3-y1).^2));
+% A=sqrt(abs(((x2-x1).^2)+(y2-y1).^2));
+% B=sqrt(abs(((x2-x3).^2)+(y2-y3).^2));
+% C=sqrt(abs(((x3-x1).^2)+(y3-y1).^2));
+
+
+A=sqrt(abs(((x3-x1).^2)+(y3-y1).^2));
+B=sqrt(abs(((x3-centerPos(1)).^2)+(y3-centerPos(2)).^2));
+C=sqrt(abs(((x1-centerPos(1)).^2)+(y1-centerPos(2)).^2));
+
+
+
 
 %Calculate two smaller cosines of angles with rule of cosines
 angles(:,1)=(B.^2 + C.^2 - A.^2)./(2.*B.*C);
