@@ -5,23 +5,21 @@
 % DLCfile:          str,    path to DeepLabCut coordinate csv file
 % INvideo:          str,    path of video to analyze
 % OUTvideo:         str,    path to output generated video to
-%   NTS, automate readmatrix and video selection with recursive dir
-%   https://www.mathworks.com/matlabcentral/answers/429891-how-to-recursively-go-through-all-directories-and-sub-directories-and-process-files
 %% Inputs
+clear
 thresh.angle=45;
 thresh.speed=10;%angle/sec
-thresh.minDur=1;%seconds
 thresh.LH=0.95;
 thresh.medi=30;
 filterWin=25;
-generateVideo = 0;
+generateVideo = false;
 
 frameRate=30;
 
 centerPos=[370,250];
 
 OUT=[];
-
+addpath(genpath('..\DeepLabCut_CowenLabMods\'))
 % DLCfile='Bright_VT2_0001DLC_resnet152_ICR BehaviorNov23shuffle1_700000_filtered.csv';
 
 dataPath='\\DATA-SERVER\ICR_Behavior\BehaviorPilot';
@@ -43,10 +41,15 @@ dataPath='\\DATA-SERVER\ICR_Behavior\BehaviorPilot';
 % % INvideo='.\Bright_VT2.mpg'
 % % OUTvideo='.\DeepLabCut\Verify.mpg'
 
+%cd('\\DATA-SERVER\ICR-Behavior-2\BehaviorPilot\0722\2019-11-18_13-08-52')
+
+
 DLCpaths=dir('Bright*filtered.csv');
+DLCpaths=dir('Bright*.csv');
 DLCfile=DLCpaths(end).name;
 
 vidPaths=dir('Bright*.mpg');
+%vidPaths=dir('Bright*labeled.mp4');
 INvideo=vidPaths(end).name;
 
 OUTvideo=[INvideo(8:10) '_OUT.mpg'];
@@ -54,7 +57,7 @@ OUTvideo=[INvideo(8:10) '_OUT.mpg'];
 video=VideoReader(INvideo); 
 frameRate=video.FrameRate;
 
-addpath(genpath('..\DeepLabCut_CowenLabMods\'))
+
 
 bodyParts={'Head' 'Neck' 'Tail'};
 %%
@@ -74,14 +77,14 @@ tail=coords(:,8:10);
 rows=length(head);
 angles=zeros(rows,3);
 
-head=LHcheck(head,thresh.LH);
-head=medifilt(head,thresh.medi,filterWin);
-
-neck=LHcheck(neck,thresh.LH);
-neck=medifilt(neck,thresh.medi,filterWin);
-
-tail=LHcheck(tail,thresh.LH);
-tail=medifilt(tail,thresh.medi,filterWin);
+% head=LHcheck(head,thresh.LH);
+% head=medifilt(head,thresh.medi,filterWin);
+% 
+% neck=LHcheck(neck,thresh.LH);
+% neck=medifilt(neck,thresh.medi,filterWin);
+% 
+% tail=LHcheck(tail,thresh.LH);
+% tail=medifilt(tail,thresh.medi,filterWin);
 
 
 
@@ -200,7 +203,7 @@ scEnd=find([0;diff(scans)]==-1);
 
 if scStart(1)>scEnd(1)
    scStart=[1;scStart];
-   scEnd=[scEnd;length(scans)];
+   %scEnd=[scEnd;length(scans)];
 end
 
 rng=scEnd-scStart;
@@ -213,21 +216,25 @@ scStart=scStart(~isnan(scStart));
 scEnd=scEnd(~isnan(scEnd));
 
 OUT.scanFrames=[scStart,scEnd];
-OUT.noScans=length(scStart);
+OUT.noScans=length(scStart)
 
-% %Create videoreader object
-% %video=VideoReader(INvideo);
-% %Generate timestamps for each frame
-% TS=(0:1/frameRate:frameRate*video.Duration)';
-% %Create list of timestamps where rat is turned
+
+%Create videoreader object
+%video=VideoReader(INvideo);
+%Generate timestamps for each frame
+TS=(0:1/frameRate:video.Duration)';
+%Create list of timestamps where rat is turned
 % turnTS=TS(turns);
 % frames=1:length(coords);
 % turnFrames=frames(turns);
 
+OUT.scanStarts=table(scStart,TS(scStart));
+OUT.scanStarts.Properties.VariableNames={'Frame','TimeStamp'};
+%%
 
 %Generate Video from frames where rat is turned
 if generateVideo
-    CreateTurnsVideo(video,OUTvideo,turns)
+    CreateTurnsVideo(video,OUTvideo,OUT.scanFrames,pos)
 end
 
 % OUT=table(turnFrames,turnTS,angles(turns,3));
