@@ -15,8 +15,8 @@ roi=list(sessList.Rat)
 soi=list(sessList.File)
 
 #move to ICR directory
-#os.chdir(r'\\DATA-SERVER\ICR_Behavior\BehaviorPilot')
-os.chdir(r'Z:\BehaviorPilot')
+os.chdir(r'\\DATA-SERVER\ICR_Behavior\BehaviorPilot')
+#os.chdir(r'Z:\BehaviorPilot')
 #save directory name
 dataFolder=os.getcwd()
 #get list of rats in directory
@@ -25,7 +25,7 @@ rats=os.listdir()
 
 
 #iterate through rats
-for rat in rats[::2]:
+for rat in rats:
     
     if 'r'+rat+"'" not in roi:
         continue
