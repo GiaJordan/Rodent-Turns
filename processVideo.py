@@ -3,7 +3,6 @@ DeepLabCut video analysis
 Gia Jordan 2020
 
 Run in Anaconda GPU Environment
-C:\Program Files\DeepLabCut-master\conda-environments
 """
 
 
@@ -23,17 +22,20 @@ def lightCorr():
     #bool, create a video with DLC labels
     Label_video=False
     
-    #researcher for task of interest - sets image processing parameters
+    #researcher for task of interest - sets image processing parameters, adam or sahana
     study='adam'
      
     ##############################
+
+
     
     #image processing parameters
     if study=='adam':
         a=2
         b=12
-        config=r'G:\Head Movement Analysis\ICR Behavior-Gia-2020-11-23\config.yaml'
+        #config=r'G:\Head Movement Analysis\ICR Behavior-Gia-2020-11-23\config.yaml'
         #config=r'G:\GitHub\Rodent-Turns\DLC\ICR Behavior-Gia-2020-11-23\config.yaml'
+        config=r'.\DLC\ICR Behavior-Gia-2020-11-23\config.yml'
     elif study=='sahana':
         a=1
         b=100

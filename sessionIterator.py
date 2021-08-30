@@ -6,6 +6,7 @@ Created on Tue Jun  1 10:13:38 2021
 to be ran in the data server ICR folder to iterate thorugh all rats/sessions
 """
 import os
+#move to repo
 os.chdir(r'G:\GitHub\Rodent-Turns')
 from processVideo import lightCorr
 import pandas as pd
