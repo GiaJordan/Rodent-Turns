@@ -18,6 +18,7 @@ An anaconda environment to use with DeepLabCut for novel video analysis is inclu
 
     Rodent-Turns\DLC\Anaconda Environment\environment.yml
   
+Nvidia CuDnn libraries will need to be added to the enviornment's directories. 
 The CNN model is stored in 
   
     Rodent-Turns\DLC\ICR Behavior-Gia-2020-11-23\dlc-models\iteration-1\ICR BehaviorNov23-trainset85shuffle1\train\snapshot-700000.7z.001
